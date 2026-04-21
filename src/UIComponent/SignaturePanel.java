@@ -7,8 +7,8 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-public class Hash extends JPanel {
-	public Hash() {
+public class SignaturePanel extends JPanel {
+	public SignaturePanel() {
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		add(createWorkPanel(), BorderLayout.CENTER);
@@ -36,6 +36,11 @@ public class Hash extends JPanel {
 		JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Khóa RSA"));
 		return panel;
+	}
+	
+	public void setSelectedAlgorithm(String selected) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

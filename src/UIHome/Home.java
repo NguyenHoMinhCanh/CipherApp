@@ -18,15 +18,15 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import UIComponent.ASymmetricPanel;
-import UIComponent.Hash;
-import UIComponent.Signature;
+import UIComponent.HashPanel;
+import UIComponent.SignaturePanel;
 import UIComponent.SymmetricPanel;
 
 public class Home extends JFrame {
 	private SymmetricPanel symmetricPanel;
 	private ASymmetricPanel aSymmetricPanel;
-	private Hash hash;
-	private Signature signature;
+	private HashPanel hashPanel;
+	private SignaturePanel signaturePanel;
 	private JPanel rightPanel;
 	private CardLayout cardLayout;
 	
@@ -40,8 +40,8 @@ public class Home extends JFrame {
         // create panel 
         symmetricPanel = new SymmetricPanel();
         aSymmetricPanel = new ASymmetricPanel();
-        hash = new Hash();
-        signature = new Signature();
+        hashPanel = new HashPanel();
+        signaturePanel = new SignaturePanel();
         
         // create right panel contains component panel with cardlayout
         rightPanel = new JPanel();
@@ -49,8 +49,8 @@ public class Home extends JFrame {
         rightPanel.setLayout(cardLayout);
         rightPanel.add(symmetricPanel, "symmetric");
         rightPanel.add(aSymmetricPanel, "asymmetric");
-        rightPanel.add(hash, "hash");
-        rightPanel.add(signature, "signature");
+        rightPanel.add(hashPanel, "hash");
+        rightPanel.add(signaturePanel, "signature");
         
         
         // create left panel 
@@ -72,7 +72,7 @@ public class Home extends JFrame {
 		panel.setLayout(new BorderLayout());
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("root"); // 
 		DefaultMutableTreeNode symmetric = new DefaultMutableTreeNode("Ma hoa doi xung");
 		symmetric.add(new DefaultMutableTreeNode("AES"));
 		symmetric.add(new DefaultMutableTreeNode("DES"));
@@ -80,7 +80,7 @@ public class Home extends JFrame {
 		symmetric.add(new DefaultMutableTreeNode("TripleDES"));
 		
 		DefaultMutableTreeNode asymmetric = new DefaultMutableTreeNode("Ma hoa bat doi xung");
-		asymmetric.add(new DefaultMutableTreeNode("RSA"));
+		asymmetric.add(new DefaultMutableTreeNode("RSA (PKCS1Padding)"));
 
 		
 		DefaultMutableTreeNode hash = new DefaultMutableTreeNode("Ham bam");
@@ -100,7 +100,7 @@ public class Home extends JFrame {
         root.add(signature);
 
         JTree algorithmTree = new JTree(root);
-        algorithmTree.setRootVisible(false);
+        algorithmTree.setRootVisible(false);// "root" vẫn tồn tại nhưng bị ẩn đi
         algorithmTree.setShowsRootHandles(true);
         
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) algorithmTree.getCellRenderer();
@@ -114,7 +114,41 @@ public class Home extends JFrame {
         		return;
         	}
         	String selected = node.getUserObject().toString();
-        	
+        	DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) node.getParent();
+            String parent = parentNode != null ? parentNode.getUserObject().toString() : "";
+
+            if ("Ma hoa doi xung".equals(selected) || "Ma hoa doi xung".equals(parent)) {
+                cardLayout.show(rightPanel, "symmetric");
+                if ("Ma hoa doi xung".equals(parent)) {
+                    symmetricPanel.setSelectedAlgorithm(selected);
+                }
+                return;
+            }
+
+            if ("Ma hoa bat doi xung".equals(selected) || "Ma hoa bat doi xung".equals(parent)) {
+                cardLayout.show(rightPanel, "asymmetric");
+                if ("Ma hoa bat doi xung".equals(parent)) {
+                    aSymmetricPanel.setSelectedAlgorithm(selected);
+                }
+                return;
+            }
+
+            if ("Ham bam".equals(selected) || "Ham bam".equals(parent)) {
+            	cardLayout.show(rightPanel, "hash");
+            	if ("Ham bam".equals(parent)) {
+            		hashPanel.setSelectedAlgorithm(selected);
+            	}
+            	
+            }
+            
+            if ("Chu ky so".equals(selected) || "Chu ky so".equals(parent)) {
+                cardLayout.show(rightPanel, "signature");
+                if ("Chu ky so".equals(parent)) {
+                    signaturePanel.setSelectedAlgorithm(selected);
+                }
+                return;
+            }
+
         	
         });
         

@@ -6,9 +6,12 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ASymmetricPanel extends JPanel {
+    private String forcedAlgorithm;
+    private JLabel selectedAlgorithmLabel;
 	public ASymmetricPanel() {
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -37,5 +40,20 @@ public class ASymmetricPanel extends JPanel {
 		JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Khóa RSA"));
 		return panel;
+	}
+
+	public void setSelectedAlgorithm(String algorithm) {
+        this.forcedAlgorithm = algorithm;
+        if (selectedAlgorithmLabel != null) {
+            selectedAlgorithmLabel.setText(getSelectedAlgorithm());
+        }
+		
+	}
+
+	private String getSelectedAlgorithm() {
+        if (forcedAlgorithm != null && !forcedAlgorithm.isEmpty()) {
+            return forcedAlgorithm;
+        }
+        return "RSA (PKCS1Padding)";
 	}
 }
