@@ -17,6 +17,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import Controller.AsymmetricController;
+import Controller.HashController;
+import Controller.SymmetricController;
+import Model.AsymmetricModel;
+import Model.HashModel;
+import Model.SymmetricModel;
 import UIComponent.ASymmetricPanel;
 import UIComponent.HashPanel;
 import UIComponent.SignaturePanel;
@@ -26,7 +32,6 @@ public class Home extends JFrame {
 	private SymmetricPanel symmetricPanel;
 	private ASymmetricPanel aSymmetricPanel;
 	private HashPanel hashPanel;
-	private SignaturePanel signaturePanel;
 	private JPanel rightPanel;
 	private CardLayout cardLayout;
 	
@@ -39,9 +44,16 @@ public class Home extends JFrame {
         
         // create panel 
         symmetricPanel = new SymmetricPanel();
+        SymmetricModel symModel = new SymmetricModel();
+        new SymmetricController(symmetricPanel, symModel);
+
         aSymmetricPanel = new ASymmetricPanel();
+        AsymmetricModel asymModel = new AsymmetricModel();
+        new AsymmetricController(aSymmetricPanel, asymModel);
+
         hashPanel = new HashPanel();
-        signaturePanel = new SignaturePanel();
+        HashModel hashModel = new HashModel();
+        new HashController(hashPanel, hashModel);
         
         // create right panel contains component panel with cardlayout
         rightPanel = new JPanel();
@@ -50,7 +62,6 @@ public class Home extends JFrame {
         rightPanel.add(symmetricPanel, "symmetric");
         rightPanel.add(aSymmetricPanel, "asymmetric");
         rightPanel.add(hashPanel, "hash");
-        rightPanel.add(signaturePanel, "signature");
         
         
         // create left panel 
@@ -90,14 +101,10 @@ public class Home extends JFrame {
         hash.add(new DefaultMutableTreeNode("SHA-384"));
         hash.add(new DefaultMutableTreeNode("SHA3-256"));
         hash.add(new DefaultMutableTreeNode("MD5"));
-
-        DefaultMutableTreeNode signature = new DefaultMutableTreeNode("Chu ky so");
-        signature.add(new DefaultMutableTreeNode("SHA256withRSA"));
         
         root.add(symmetric);
         root.add(asymmetric);
         root.add(hash);
-        root.add(signature);
 
         JTree algorithmTree = new JTree(root);
         algorithmTree.setRootVisible(false);// "root" vẫn tồn tại nhưng bị ẩn đi
@@ -140,15 +147,6 @@ public class Home extends JFrame {
             	}
             	
             }
-            
-            if ("Chu ky so".equals(selected) || "Chu ky so".equals(parent)) {
-                cardLayout.show(rightPanel, "signature");
-                if ("Chu ky so".equals(parent)) {
-                    signaturePanel.setSelectedAlgorithm(selected);
-                }
-                return;
-            }
-
         	
         });
         

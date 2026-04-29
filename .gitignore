@@ -1,0 +1,17 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Compiled class files
+bin/
+*.class
+
+# Logs and temporary
+*.log
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
