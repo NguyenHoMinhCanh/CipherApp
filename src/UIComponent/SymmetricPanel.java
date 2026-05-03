@@ -8,76 +8,130 @@ import java.awt.GridLayout;
 import javax.swing.*;
 
 public class SymmetricPanel extends JPanel {
-	
-	 private JComboBox<String> algorithmBox;
-	    private JTextField keyField;
-	    private JTextArea inputArea;
-	    private JTextArea outputArea;
-	    private JButton encryptBtn;
-	    private JButton decryptBtn;
 
-	    public SymmetricPanel() {
-	        setLayout(new BorderLayout());
-	        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-	        add(createWorkPanel(), BorderLayout.CENTER);
-	    }
+    private JComboBox<String> algorithmBox;
+    private JTextField keyField;
+    private JTextArea inputArea;
+    private JTextArea outputArea;
+    private JButton encryptBtn;
+    private JButton decryptBtn;
 
-	    private JPanel createWorkPanel() {
-	        JPanel panel = new JPanel(new BorderLayout(0, 10));
-	        panel.add(createTopPanel(), BorderLayout.NORTH);
-	        panel.add(createCenterPanel(), BorderLayout.CENTER);
-	        panel.add(createButtonPanel(), BorderLayout.SOUTH);
-	        return panel;
-	    }
+    private JButton chooseFileBtn;
+    private JLabel selectedFileLabel;
+    private JButton encryptFileBtn;
+    private JButton decryptFileBtn;
 
-	    private JPanel createTopPanel() {
-	        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
-	        panel.setBorder(BorderFactory.createTitledBorder("Mã hóa đối xứng"));
+    public SymmetricPanel() {
+        setLayout(new BorderLayout());
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        add(createWorkPanel(), BorderLayout.CENTER);
+    }
 
-	        panel.add(new JLabel("Thuật toán:"));
-	        algorithmBox = new JComboBox<>(new String[]{"AES", "DES","Blowfish","TripleDES"});
-	        panel.add(algorithmBox);
+    private JPanel createWorkPanel() {
+        JPanel panel = new JPanel(new BorderLayout(0, 10));
+        panel.add(createTopPanel(), BorderLayout.NORTH);
+        panel.add(createCenterPanel(), BorderLayout.CENTER);
+        panel.add(createButtonPanel(), BorderLayout.SOUTH);
+        return panel;
+    }
 
-	        panel.add(new JLabel("Key:"));
-	        keyField = new JTextField();
-	        panel.add(keyField);
+    private JPanel createTopPanel() {
+        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
+        panel.setBorder(BorderFactory.createTitledBorder("Mã hóa đối xứng"));
 
-	        return panel;
-	    }
+        panel.add(new JLabel("Thuật toán:"));
+        algorithmBox = new JComboBox<>(new String[]{"AES", "DES", "Blowfish", "TripleDES", "CAST6", "Twofish", "Hill", "Vigenere", "DESede"});
+        panel.add(algorithmBox);
 
-	    private JPanel createCenterPanel() {
-	        JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
+        panel.add(new JLabel("Key:"));
+        keyField = new JTextField();
+        panel.add(keyField);
 
-	        inputArea = new JTextArea(5, 20);
-	        outputArea = new JTextArea(5, 20);
+        chooseFileBtn = new JButton("Chọn File");
+        selectedFileLabel = new JLabel("Chưa chọn file nào.");
+        panel.add(chooseFileBtn);
+        panel.add(selectedFileLabel);
 
-	        panel.add(createTextPanel("Input", inputArea));
-	        panel.add(createTextPanel("Output", outputArea));
+        return panel;
+    }
 
-	        return panel;
-	    }
+    private JPanel createCenterPanel() {
+        JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
 
-	    private JPanel createTextPanel(String title, JTextArea area) {
-	        JPanel panel = new JPanel(new BorderLayout());
-	        panel.setBorder(BorderFactory.createTitledBorder(title));
-	        panel.add(new JScrollPane(area), BorderLayout.CENTER);
-	        return panel;
-	    }
+        inputArea = new JTextArea(5, 20);
+        outputArea = new JTextArea(5, 20);
 
-	    private JPanel createButtonPanel() {
-	        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
+        panel.add(createTextPanel("Input", inputArea));
+        panel.add(createTextPanel("Output", outputArea));
 
-	        encryptBtn = new JButton("Encrypt");
-	        decryptBtn = new JButton("Decrypt");
+        return panel;
+    }
 
-	        panel.add(encryptBtn);
-	        panel.add(decryptBtn);
+    private JPanel createTextPanel(String title, JTextArea area) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createTitledBorder(title));
+        panel.add(new JScrollPane(area), BorderLayout.CENTER);
+        return panel;
+    }
 
-	        return panel;
-	    }
+    private JPanel createButtonPanel() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
 
-	    public void setSelectedAlgorithm(String algorithm) {
-	        algorithmBox.setSelectedItem(algorithm);
-	    }
+        encryptBtn = new JButton("Encrypt Text");
+        decryptBtn = new JButton("Decrypt Text");
+        encryptFileBtn = new JButton("Encrypt File");
+        decryptFileBtn = new JButton("Decrypt File");
 
+        panel.add(encryptBtn);
+        panel.add(decryptBtn);
+        panel.add(new JLabel(" | "));
+        panel.add(encryptFileBtn);
+        panel.add(decryptFileBtn);
+
+        return panel;
+    }
+
+    public void setSelectedAlgorithm(String algorithm) {
+        algorithmBox.setSelectedItem(algorithm);
+    }
+
+    public String getSelectedAlgorithm() {
+        return (String) algorithmBox.getSelectedItem();
+    }
+
+    public String getKey() {
+        return keyField.getText();
+    }
+
+    public String getInputText() {
+        return inputArea.getText();
+    }
+
+    public void setOutputText(String text) {
+        outputArea.setText(text);
+    }
+
+    public void addEncryptListener(java.awt.event.ActionListener listener) {
+        encryptBtn.addActionListener(listener);
+    }
+
+    public void addDecryptListener(java.awt.event.ActionListener listener) {
+        decryptBtn.addActionListener(listener);
+    }
+
+    public void setSelectedFile(String path) {
+        selectedFileLabel.setText(path);
+    }
+
+    public void addChooseFileListener(java.awt.event.ActionListener listener) {
+        chooseFileBtn.addActionListener(listener);
+    }
+
+    public void addEncryptFileListener(java.awt.event.ActionListener listener) {
+        encryptFileBtn.addActionListener(listener);
+    }
+
+    public void addDecryptFileListener(java.awt.event.ActionListener listener) {
+        decryptFileBtn.addActionListener(listener);
+    }
 }

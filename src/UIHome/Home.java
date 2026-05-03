@@ -25,7 +25,6 @@ import Model.HashModel;
 import Model.SymmetricModel;
 import UIComponent.ASymmetricPanel;
 import UIComponent.HashPanel;
-import UIComponent.SignaturePanel;
 import UIComponent.SymmetricPanel;
 
 public class Home extends JFrame {
