@@ -287,4 +287,38 @@ public class SymmetricModel {
         }
     }
 
+    public String generateKey(String algorithm) {
+        java.util.Random rand = new java.security.SecureRandom();
+        if ("Vigenere".equals(algorithm)) {
+            // Generate a random alphabetic string, say length 8
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 8; i++) {
+                sb.append((char) ('A' + rand.nextInt(26)));
+            }
+            return sb.toString();
+        } else if ("Hill".equals(algorithm)) {
+            // Generate a 4-char string that forms an invertible 2x2 matrix mod 26
+            while (true) {
+                int k11 = rand.nextInt(26);
+                int k12 = rand.nextInt(26);
+                int k21 = rand.nextInt(26);
+                int k22 = rand.nextInt(26);
+                int det = ((k11 * k22 - k12 * k21) % 26 + 26) % 26;
+                if (det % 2 != 0 && det % 13 != 0) { // coprime with 26
+                    return "" + (char)('A' + k11) + (char)('A' + k12) + (char)('A' + k21) + (char)('A' + k22);
+                }
+            }
+        } else {
+            // For JCA algorithms, generate a random alphanumeric string of appropriate length
+            String[] meta = resolveAlgorithm(algorithm);
+            int keyLength = Integer.parseInt(meta[1]);
+            String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < keyLength; i++) {
+                sb.append(chars.charAt(rand.nextInt(chars.length())));
+            }
+            return sb.toString();   
+        }
+    }
+
 }

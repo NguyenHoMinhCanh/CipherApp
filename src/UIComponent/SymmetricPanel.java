@@ -11,6 +11,7 @@ public class SymmetricPanel extends JPanel {
 
     private JComboBox<String> algorithmBox;
     private JTextField keyField;
+    private JButton generateKeyBtn;
     private JTextArea inputArea;
     private JTextArea outputArea;
     private JButton encryptBtn;
@@ -20,11 +21,32 @@ public class SymmetricPanel extends JPanel {
     private JLabel selectedFileLabel;
     private JButton encryptFileBtn;
     private JButton decryptFileBtn;
+    private JLabel separatorLabel;
 
     public SymmetricPanel() {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(createWorkPanel(), BorderLayout.CENTER);
+        setupAlgorithmListener();
+    }
+
+    private void setupAlgorithmListener() {
+        algorithmBox.addActionListener(e -> updateFileUIVisibility());
+        // Initial check
+        updateFileUIVisibility();
+    }
+
+    private void updateFileUIVisibility() {
+        String algo = (String) algorithmBox.getSelectedItem();
+        boolean isFileSupported = !("Hill".equals(algo) || "Vigenere".equals(algo));
+
+        chooseFileBtn.setVisible(isFileSupported);
+        selectedFileLabel.setVisible(isFileSupported);
+        encryptFileBtn.setVisible(isFileSupported);
+        decryptFileBtn.setVisible(isFileSupported);
+        if (separatorLabel != null) {
+            separatorLabel.setVisible(isFileSupported);
+        }
     }
 
     private JPanel createWorkPanel() {
@@ -44,8 +66,12 @@ public class SymmetricPanel extends JPanel {
         panel.add(algorithmBox);
 
         panel.add(new JLabel("Key:"));
+        JPanel keyPanel = new JPanel(new BorderLayout(5, 0));
         keyField = new JTextField();
-        panel.add(keyField);
+        generateKeyBtn = new JButton("Tạo Key");
+        keyPanel.add(keyField, BorderLayout.CENTER);
+        keyPanel.add(generateKeyBtn, BorderLayout.EAST);
+        panel.add(keyPanel);
 
         chooseFileBtn = new JButton("Chọn File");
         selectedFileLabel = new JLabel("Chưa chọn file nào.");
@@ -81,10 +107,11 @@ public class SymmetricPanel extends JPanel {
         decryptBtn = new JButton("Decrypt Text");
         encryptFileBtn = new JButton("Encrypt File");
         decryptFileBtn = new JButton("Decrypt File");
+        separatorLabel = new JLabel(" | ");
 
         panel.add(encryptBtn);
         panel.add(decryptBtn);
-        panel.add(new JLabel(" | "));
+        panel.add(separatorLabel);
         panel.add(encryptFileBtn);
         panel.add(decryptFileBtn);
 
@@ -101,6 +128,14 @@ public class SymmetricPanel extends JPanel {
 
     public String getKey() {
         return keyField.getText();
+    }
+
+    public void setKey(String key) {
+        keyField.setText(key);
+    }
+
+    public void addGenerateKeyListener(java.awt.event.ActionListener listener) {
+        generateKeyBtn.addActionListener(listener);
     }
 
     public String getInputText() {

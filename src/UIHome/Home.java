@@ -88,6 +88,11 @@ public class Home extends JFrame {
 		symmetric.add(new DefaultMutableTreeNode("DES"));
 		symmetric.add(new DefaultMutableTreeNode("Blowfish"));
 		symmetric.add(new DefaultMutableTreeNode("TripleDES"));
+        symmetric.add(new DefaultMutableTreeNode("CAST6"));
+        symmetric.add(new DefaultMutableTreeNode("Twofish"));
+        symmetric.add(new DefaultMutableTreeNode("Hill"));
+        symmetric.add(new DefaultMutableTreeNode("Vigenere"));
+        symmetric.add(new DefaultMutableTreeNode("DESede"));
 		
 		DefaultMutableTreeNode asymmetric = new DefaultMutableTreeNode("Ma hoa bat doi xung");
 		asymmetric.add(new DefaultMutableTreeNode("RSA (PKCS1Padding)"));
