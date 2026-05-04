@@ -146,7 +146,7 @@ public class SymmetricModel {
             throw new Exception("Văn bản Hill không được rỗng sau khi lọc ký tự.");
         }
         if (plaintext.length() % 2 != 0) {
-            plaintext += "X"; // padding
+            plaintext += "X";
         }
 
         StringBuilder result = new StringBuilder();
@@ -176,7 +176,6 @@ public class SymmetricModel {
 
         int det = ((k11 * k22 - k12 * k21) % 26 + 26) % 26;
 
-        // Tìm nghịch đảo modulo 26 của định thức
         int detInv = -1;
         for (int i = 1; i < 26; i++) {
             if ((det * i) % 26 == 1) {
@@ -290,14 +289,12 @@ public class SymmetricModel {
     public String generateKey(String algorithm) {
         java.util.Random rand = new java.security.SecureRandom();
         if ("Vigenere".equals(algorithm)) {
-            // Generate a random alphabetic string, say length 8
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 8; i++) {
                 sb.append((char) ('A' + rand.nextInt(26)));
             }
             return sb.toString();
         } else if ("Hill".equals(algorithm)) {
-            // Generate a 4-char string that forms an invertible 2x2 matrix mod 26
             while (true) {
                 int k11 = rand.nextInt(26);
                 int k12 = rand.nextInt(26);
@@ -309,7 +306,6 @@ public class SymmetricModel {
                 }
             }
         } else {
-            // For JCA algorithms, generate a random alphanumeric string of appropriate length
             String[] meta = resolveAlgorithm(algorithm);
             int keyLength = Integer.parseInt(meta[1]);
             String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -317,7 +313,7 @@ public class SymmetricModel {
             for (int i = 0; i < keyLength; i++) {
                 sb.append(chars.charAt(rand.nextInt(chars.length())));
             }
-            return sb.toString();   
+            return sb.toString();
         }
     }
 
