@@ -4,6 +4,7 @@ package UIComponent;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -134,7 +135,7 @@ public class SymmetricPanel extends JPanel {
         keyField.setText(key);
     }
 
-    public void addGenerateKeyListener(java.awt.event.ActionListener listener) {
+    public void addGenerateKeyListener(ActionListener listener) {
         generateKeyBtn.addActionListener(listener);
     }
 
@@ -146,11 +147,11 @@ public class SymmetricPanel extends JPanel {
         outputArea.setText(text);
     }
 
-    public void addEncryptListener(java.awt.event.ActionListener listener) {
+    public void addEncryptListener(ActionListener listener) {
         encryptBtn.addActionListener(listener);
     }
 
-    public void addDecryptListener(java.awt.event.ActionListener listener) {
+    public void addDecryptListener(ActionListener listener) {
         decryptBtn.addActionListener(listener);
     }
 
@@ -158,15 +159,15 @@ public class SymmetricPanel extends JPanel {
         selectedFileLabel.setText(path);
     }
 
-    public void addChooseFileListener(java.awt.event.ActionListener listener) {
+    public void addChooseFileListener(ActionListener listener) {
         chooseFileBtn.addActionListener(listener);
     }
 
-    public void addEncryptFileListener(java.awt.event.ActionListener listener) {
+    public void addEncryptFileListener(ActionListener listener) {
         encryptFileBtn.addActionListener(listener);
     }
 
-    public void addDecryptFileListener(java.awt.event.ActionListener listener) {
+    public void addDecryptFileListener(ActionListener listener) {
         decryptFileBtn.addActionListener(listener);
     }
 }

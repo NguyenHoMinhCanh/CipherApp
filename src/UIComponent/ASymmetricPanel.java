@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -160,15 +161,15 @@ public class ASymmetricPanel extends JPanel {
 		outputArea.setText(text);
 	}
 
-	public void addGenerateKeyListener(java.awt.event.ActionListener listener) {
+	public void addGenerateKeyListener(ActionListener listener) {
 		generateKeyBtn.addActionListener(listener);
 	}
 
-	public void addEncryptListener(java.awt.event.ActionListener listener) {
+	public void addEncryptListener(ActionListener listener) {
 		encryptBtn.addActionListener(listener);
 	}
 
-	public void addDecryptListener(java.awt.event.ActionListener listener) {
+	public void addDecryptListener(ActionListener listener) {
 		decryptBtn.addActionListener(listener);
 	}
 
@@ -176,15 +177,15 @@ public class ASymmetricPanel extends JPanel {
 		selectedFileLabel.setText(path);
 	}
 
-	public void addChooseFileListener(java.awt.event.ActionListener listener) {
+	public void addChooseFileListener(ActionListener listener) {
 		chooseFileBtn.addActionListener(listener);
 	}
 
-	public void addEncryptFileListener(java.awt.event.ActionListener listener) {
+	public void addEncryptFileListener(ActionListener listener) {
 		encryptFileBtn.addActionListener(listener);
 	}
 
-	public void addDecryptFileListener(java.awt.event.ActionListener listener) {
+	public void addDecryptFileListener(ActionListener listener) {
 		decryptFileBtn.addActionListener(listener);
 	}
 }
