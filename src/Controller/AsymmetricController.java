@@ -6,6 +6,7 @@ import UIComponent.ASymmetricPanel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.security.KeyPair;
 
 public class AsymmetricController {
@@ -86,9 +87,9 @@ public class AsymmetricController {
     class ChooseFileListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            JFileChooser fileChooser = new JFileChooser();
             int option = fileChooser.showOpenDialog(view);
-            if (option == javax.swing.JFileChooser.APPROVE_OPTION) {
+            if (option == JFileChooser.APPROVE_OPTION) {
                 selectedFile = fileChooser.getSelectedFile();
                 view.setSelectedFile(selectedFile.getAbsolutePath());
             }
@@ -108,13 +109,13 @@ public class AsymmetricController {
                 return;
             }
 
-            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Lưu file đã mã hóa");
-            java.io.File suggestedFile = new java.io.File(selectedFile.getAbsolutePath() + ".enc");
+            File suggestedFile = new java.io.File(selectedFile.getAbsolutePath() + ".enc");
             fileChooser.setSelectedFile(suggestedFile);
             int option = fileChooser.showSaveDialog(view);
-            if (option == javax.swing.JFileChooser.APPROVE_OPTION) {
-                java.io.File outputFile = fileChooser.getSelectedFile();
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File outputFile = fileChooser.getSelectedFile();
                 try {
                     model.encryptFileRSA(selectedFile, outputFile, pubKey);
                     JOptionPane.showMessageDialog(view, "Mã hóa file thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
@@ -138,19 +139,19 @@ public class AsymmetricController {
                 return;
             }
 
-            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Lưu file đã giải mã");
             String originalPath = selectedFile.getAbsolutePath();
-            java.io.File suggestedFile;
+            File suggestedFile;
             if (originalPath.endsWith(".enc")) {
-                suggestedFile = new java.io.File(originalPath.substring(0, originalPath.length() - 4));
+                suggestedFile = new File(originalPath.substring(0, originalPath.length() - 4));
             } else {
-                suggestedFile = new java.io.File(originalPath + ".dec");
+                suggestedFile = new File(originalPath + ".dec");
             }
             fileChooser.setSelectedFile(suggestedFile);
             int option = fileChooser.showSaveDialog(view);
             if (option == javax.swing.JFileChooser.APPROVE_OPTION) {
-                java.io.File outputFile = fileChooser.getSelectedFile();
+                File outputFile = fileChooser.getSelectedFile();
                 try {
                     model.decryptFileRSA(selectedFile, outputFile, privKey);
                     JOptionPane.showMessageDialog(view, "Giải mã file thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);

@@ -4,9 +4,10 @@ package Controller;
 import Model.SymmetricModel;
 import UIComponent.SymmetricPanel;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class SymmetricController {
     private SymmetricPanel view;
@@ -84,9 +85,9 @@ public class SymmetricController {
     class ChooseFileListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            JFileChooser fileChooser = new JFileChooser();
             int option = fileChooser.showOpenDialog(view);
-            if (option == javax.swing.JFileChooser.APPROVE_OPTION) {
+            if (option == JFileChooser.APPROVE_OPTION) {
                 selectedFile = fileChooser.getSelectedFile();
                 view.setSelectedFile(selectedFile.getAbsolutePath());
             }
@@ -107,11 +108,11 @@ public class SymmetricController {
                 return;
             }
 
-            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Lưu file đã mã hóa");
             int option = fileChooser.showSaveDialog(view);
-            if (option == javax.swing.JFileChooser.APPROVE_OPTION) {
-                java.io.File outputFile = fileChooser.getSelectedFile();
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File outputFile = fileChooser.getSelectedFile();
                 try {
                     model.encryptFile(selectedFile, outputFile, key, algo);
                     JOptionPane.showMessageDialog(view, "Mã hóa file thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
@@ -136,11 +137,11 @@ public class SymmetricController {
                 return;
             }
 
-            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Lưu file đã giải mã");
             int option = fileChooser.showSaveDialog(view);
-            if (option == javax.swing.JFileChooser.APPROVE_OPTION) {
-                java.io.File outputFile = fileChooser.getSelectedFile();
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File outputFile = fileChooser.getSelectedFile();
                 try {
                     model.decryptFile(selectedFile, outputFile, key, algo);
                     JOptionPane.showMessageDialog(view, "Giải mã file thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);

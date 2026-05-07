@@ -105,6 +105,7 @@ public class Home extends JFrame {
         hash.add(new DefaultMutableTreeNode("SHA-384"));
         hash.add(new DefaultMutableTreeNode("SHA3-256"));
         hash.add(new DefaultMutableTreeNode("MD5"));
+        hash.add(new DefaultMutableTreeNode("CRC-32"));
         
         root.add(symmetric);
         root.add(asymmetric);

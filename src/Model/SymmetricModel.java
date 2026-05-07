@@ -3,7 +3,12 @@ package Model;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.security.Security;
 import java.util.Base64;
 
@@ -224,7 +229,7 @@ public class SymmetricModel {
         }
     }
 
-    public void encryptFile(java.io.File inputFile, java.io.File outputFile, String keyString, String algorithm) throws Exception {
+    public void encryptFile(File inputFile, File outputFile, String keyString, String algorithm) throws Exception {
         if (algorithm.equalsIgnoreCase("Vigenere") || algorithm.equalsIgnoreCase("Hill")) {
             throw new Exception("Thuật toán " + algorithm + " chỉ hỗ trợ văn bản, không hỗ trợ File.");
         }
@@ -244,9 +249,9 @@ public class SymmetricModel {
         }
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 
-        try (java.io.FileInputStream fis = new java.io.FileInputStream(inputFile);
-             java.io.FileOutputStream fos = new java.io.FileOutputStream(outputFile);
-             javax.crypto.CipherOutputStream cos = new javax.crypto.CipherOutputStream(fos, cipher)) {
+        try (FileInputStream fis = new FileInputStream(inputFile);
+             FileOutputStream fos = new FileOutputStream(outputFile);
+             CipherOutputStream cos = new CipherOutputStream(fos, cipher)) {
             byte[] buffer = new byte[8192];
             int bytesRead;
             while ((bytesRead = fis.read(buffer)) != -1) {
@@ -255,7 +260,7 @@ public class SymmetricModel {
         }
     }
 
-    public void decryptFile(java.io.File inputFile, java.io.File outputFile, String keyString, String algorithm) throws Exception {
+    public void decryptFile(File inputFile, File outputFile, String keyString, String algorithm) throws Exception {
         if (algorithm.equalsIgnoreCase("Vigenere") || algorithm.equalsIgnoreCase("Hill")) {
             throw new Exception("Thuật toán " + algorithm + " chỉ hỗ trợ văn bản, không hỗ trợ File.");
         }
@@ -275,9 +280,9 @@ public class SymmetricModel {
         }
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-        try (java.io.FileInputStream fis = new java.io.FileInputStream(inputFile);
-             javax.crypto.CipherInputStream cis = new javax.crypto.CipherInputStream(fis, cipher);
-             java.io.FileOutputStream fos = new java.io.FileOutputStream(outputFile)) {
+        try (FileInputStream fis = new FileInputStream(inputFile);
+             CipherInputStream cis = new CipherInputStream(fis, cipher);
+             FileOutputStream fos = new FileOutputStream(outputFile)) {
             byte[] buffer = new byte[8192];
             int bytesRead;
             while ((bytesRead = cis.read(buffer)) != -1) {
