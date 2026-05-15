@@ -9,8 +9,10 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Base64;
+import java.util.Random;
 
 public class SymmetricModel {
     // su dung thu vien ngoai bouncy castle provider
@@ -292,7 +294,7 @@ public class SymmetricModel {
     }
 
     public String generateKey(String algorithm) {
-        java.util.Random rand = new java.security.SecureRandom();
+        Random rand = new SecureRandom();
         if ("Vigenere".equals(algorithm)) {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 8; i++) {

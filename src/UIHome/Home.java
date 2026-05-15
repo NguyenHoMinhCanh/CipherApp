@@ -1,9 +1,10 @@
 package UIHome;
 
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.util.Enumeration;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -61,11 +62,10 @@ public class Home extends JFrame {
         rightPanel.add(symmetricPanel, "symmetric");
         rightPanel.add(aSymmetricPanel, "asymmetric");
         rightPanel.add(hashPanel, "hash");
-        
-        
-        // create left panel 
+
+        // create left panel
         JPanel leftJPanel = createLeftPanel();
-        
+
         // split pane chia UI 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftJPanel, rightPanel);
         splitPane.setDividerLocation(200);
@@ -82,8 +82,8 @@ public class Home extends JFrame {
 		panel.setLayout(new BorderLayout());
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("root"); // 
-		DefaultMutableTreeNode symmetric = new DefaultMutableTreeNode("Ma hoa doi xung");
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+		DefaultMutableTreeNode symmetric = new DefaultMutableTreeNode("Mã hóa đối xứng");
 		symmetric.add(new DefaultMutableTreeNode("AES"));
 		symmetric.add(new DefaultMutableTreeNode("DES"));
 		symmetric.add(new DefaultMutableTreeNode("Blowfish"));
@@ -94,11 +94,11 @@ public class Home extends JFrame {
         symmetric.add(new DefaultMutableTreeNode("Vigenere"));
         symmetric.add(new DefaultMutableTreeNode("DESede"));
 		
-		DefaultMutableTreeNode asymmetric = new DefaultMutableTreeNode("Ma hoa bat doi xung");
+		DefaultMutableTreeNode asymmetric = new DefaultMutableTreeNode("Mã hóa bất đối xứng");
 		asymmetric.add(new DefaultMutableTreeNode("RSA (PKCS1Padding)"));
 
 		
-		DefaultMutableTreeNode hash = new DefaultMutableTreeNode("Ham bam");
+		DefaultMutableTreeNode hash = new DefaultMutableTreeNode("Hàm băm");
         hash.add(new DefaultMutableTreeNode("SHA-256"));
         hash.add(new DefaultMutableTreeNode("SHA-1"));
         hash.add(new DefaultMutableTreeNode("SHA-512"));
@@ -112,13 +112,18 @@ public class Home extends JFrame {
         root.add(hash);
 
         JTree algorithmTree = new JTree(root);
-        algorithmTree.setRootVisible(false);// "root" vẫn tồn tại nhưng bị ẩn đi
+        algorithmTree.setRootVisible(false);
         algorithmTree.setShowsRootHandles(true);
         
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) algorithmTree.getCellRenderer();
         renderer.setLeafIcon(null);
         renderer.setClosedIcon(null);
         renderer.setOpenIcon(null);
+        renderer.setBackgroundSelectionColor(new Color(52, 152, 219));
+        renderer.setTextSelectionColor(Color.WHITE);
+        renderer.setBackgroundNonSelectionColor(new Color(245, 247, 250));
+        renderer.setTextNonSelectionColor(Color.BLACK);
+        renderer.setBorderSelectionColor(null);
         
         algorithmTree.addTreeSelectionListener(e -> {
         	DefaultMutableTreeNode node = (DefaultMutableTreeNode) algorithmTree.getLastSelectedPathComponent();
@@ -129,38 +134,101 @@ public class Home extends JFrame {
         	DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) node.getParent();
             String parent = parentNode != null ? parentNode.getUserObject().toString() : "";
 
-            if ("Ma hoa doi xung".equals(selected) || "Ma hoa doi xung".equals(parent)) {
+            if ("Mã hóa đối xứng".equals(selected) || "Mã hóa đối xứng".equals(parent)) {
                 cardLayout.show(rightPanel, "symmetric");
-                if ("Ma hoa doi xung".equals(parent)) {
+                if ("Mã hóa đối xứng".equals(parent)) {
                     symmetricPanel.setSelectedAlgorithm(selected);
                 }
                 return;
             }
 
-            if ("Ma hoa bat doi xung".equals(selected) || "Ma hoa bat doi xung".equals(parent)) {
+            if ("Mã hóa bất đối xứng".equals(selected) || "Mã hóa bất đối xứng".equals(parent)) {
                 cardLayout.show(rightPanel, "asymmetric");
-                if ("Ma hoa bat doi xung".equals(parent)) {
+                if ("Mã hóa bất đối xứng".equals(parent)) {
                     aSymmetricPanel.setSelectedAlgorithm(selected);
                 }
                 return;
             }
 
-            if ("Ham bam".equals(selected) || "Ham bam".equals(parent)) {
+            if ("Hàm băm".equals(selected) || "Hàm băm".equals(parent)) {
             	cardLayout.show(rightPanel, "hash");
-            	if ("Ham bam".equals(parent)) {
+            	if ("Hàm băm".equals(parent)) {
             		hashPanel.setSelectedAlgorithm(selected);
             	}
             	
             }
         	
         });
-        
-        panel.add(new JScrollPane(algorithmTree), BorderLayout.CENTER);
+        algorithmTree.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                TreePath path = algorithmTree.getPathForLocation(e.getX(), e.getY());
+
+                if (path != null) {
+                    algorithmTree.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                } else {
+                    algorithmTree.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                }
+            }
+        });
 
         algorithmTree.setSelectionPath(new TreePath(symmetric.getPath()));
-        
+        algorithmTree.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        algorithmTree.setRowHeight(20);
+        algorithmTree.setBackground(new Color(245, 247, 250));
+        algorithmTree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        JScrollPane scrollPane = new JScrollPane(algorithmTree);
+
+        symmetricPanel.addAlgorithmChangeListener(e -> {
+            String selectedAlgo = symmetricPanel.getSelectedAlgorithm();
+
+            selectNode(algorithmTree, selectedAlgo);
+        });
+
+        aSymmetricPanel.addAlgorithmChangeListener(e -> {
+            String selectedAlgo = aSymmetricPanel.getSelectedAlgorithm();
+
+            selectNode(algorithmTree, selectedAlgo);
+        });
+
+        hashPanel.addAlgorithmChangeListener(e -> {
+            String selectedAlgo = hashPanel.getSelectedAlgorithm();
+
+            selectNode(algorithmTree, selectedAlgo);
+        });
+
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.setBackground(new Color(240, 242, 245));
+        panel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1,
+                new Color(220, 220, 220)
+        ));
+
 		return panel;
 	}
+
+    private void selectNode(JTree tree, String nodeName) {
+
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
+
+        Enumeration<?> enumeration = root.breadthFirstEnumeration();
+
+        while (enumeration.hasMoreElements()) {
+
+            DefaultMutableTreeNode node =
+                    (DefaultMutableTreeNode) enumeration.nextElement();
+
+            if (nodeName.equals(node.getUserObject().toString())) {
+
+                TreePath path = new TreePath(node.getPath());
+
+                tree.setSelectionPath(path);
+                tree.scrollPathToVisible(path);
+
+                break;
+            }
+        }
+    }
 
 
 	public static void main(String[] args) {

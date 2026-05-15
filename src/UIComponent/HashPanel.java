@@ -1,9 +1,9 @@
 package UIComponent;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
@@ -36,10 +36,39 @@ public class HashPanel extends JPanel {
 		hashBtn = new JButton("Hash Text");
 		hashFileBtn = new JButton("Hash File");
 
+		styleButton(hashBtn, new Color(212, 245, 221), new Color(39, 174, 96));
+		styleButton(hashFileBtn, new Color(252, 243, 207), new Color(243, 156, 18));
+
 		panel.add(hashBtn);
 		panel.add(new JLabel(" | "));
 		panel.add(hashFileBtn);
 		return panel;
+	}
+
+	private void styleButton(JButton button, Color normalColor, Color hoverColor) {
+		button.setBackground(normalColor);
+		button.setForeground(Color.BLACK);
+
+		button.setFocusPainted(false);
+		button.setBorderPainted(false);
+		button.setOpaque(true);
+
+		button.setFont(new Font("Arial", Font.PLAIN, 11));
+		button.setBorder(BorderFactory.createLineBorder(Color.black,2,true));
+		button.setMargin(new Insets(5, 10, 5, 10));
+		button.setBorder(BorderFactory.createCompoundBorder(button.getBorder(), BorderFactory.createEmptyBorder(4,8,4,8)));
+		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent evt) {
+				button.setBackground(hoverColor);
+			}
+			@Override
+			public void mouseExited(MouseEvent evt) {
+				button.setBackground(normalColor);
+			}
+		});
 	}
 
 	private JPanel createCenterPanel() {
@@ -66,7 +95,7 @@ public class HashPanel extends JPanel {
 		panel.setBorder(BorderFactory.createTitledBorder("Hàm băm"));
 
 		panel.add(new JLabel("Thuật toán:"));
-		algorithmBox = new JComboBox<>(new String[]{"SHA-256", "SHA-1", "SHA-512", "SHA-384", "SHA3-256", "MD5", "MD4", "CRC-32"});
+		algorithmBox = new JComboBox<>(new String[]{"SHA-256", "SHA-1", "SHA-512", "SHA-384", "SHA3-256", "MD5", "CRC-32"});
 		panel.add(algorithmBox);
 
 		chooseFileBtn = new JButton("Chọn File...");
@@ -75,6 +104,11 @@ public class HashPanel extends JPanel {
 		panel.add(selectedFileLabel);
 		return panel;
 	}
+
+	public void addAlgorithmChangeListener(ActionListener listener) {
+		algorithmBox.addActionListener(listener);
+	}
+
 	public void setSelectedAlgorithm(String algorithm) {
 		algorithmBox.setSelectedItem(algorithm);
 	}

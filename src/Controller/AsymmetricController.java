@@ -111,7 +111,7 @@ public class AsymmetricController {
 
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Lưu file đã mã hóa");
-            File suggestedFile = new java.io.File(selectedFile.getAbsolutePath() + ".enc");
+            File suggestedFile = new File(selectedFile.getAbsolutePath() + ".enc");
             fileChooser.setSelectedFile(suggestedFile);
             int option = fileChooser.showSaveDialog(view);
             if (option == JFileChooser.APPROVE_OPTION) {
@@ -150,7 +150,7 @@ public class AsymmetricController {
             }
             fileChooser.setSelectedFile(suggestedFile);
             int option = fileChooser.showSaveDialog(view);
-            if (option == javax.swing.JFileChooser.APPROVE_OPTION) {
+            if (option == JFileChooser.APPROVE_OPTION) {
                 File outputFile = fileChooser.getSelectedFile();
                 try {
                     model.decryptFileRSA(selectedFile, outputFile, privKey);

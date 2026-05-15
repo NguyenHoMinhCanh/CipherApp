@@ -1,10 +1,9 @@
 package UIComponent;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
@@ -114,6 +113,11 @@ public class ASymmetricPanel extends JPanel {
 		encryptFileBtn = new JButton("Encrypt File");
 		decryptFileBtn = new JButton("Decrypt File");
 
+		styleButton(encryptBtn, new Color(212, 245, 221), new Color(39, 174, 96));
+		styleButton(decryptBtn, new Color(214, 234, 248), new Color(41, 128, 185));
+		styleButton(encryptFileBtn, new Color(252, 243, 207), new Color(243, 156, 18));
+		styleButton(decryptFileBtn, new Color(245, 203, 167), new Color(192, 57, 43));
+
 		panel.add(encryptBtn);
 		panel.add(decryptBtn);
 		panel.add(new JLabel(" | "));
@@ -123,7 +127,35 @@ public class ASymmetricPanel extends JPanel {
 		return panel;
 	}
 
+	private void styleButton(JButton button, Color normalColor, Color hoverColor) {
+		button.setBackground(normalColor);
+		button.setForeground(Color.BLACK);
 
+		button.setFocusPainted(false);
+		button.setBorderPainted(false);
+		button.setOpaque(true);
+
+		button.setFont(new Font("Arial", Font.PLAIN, 11));
+		button.setBorder(BorderFactory.createLineBorder(Color.black,2,true));
+		button.setMargin(new Insets(5, 10, 5, 10));
+		button.setBorder(BorderFactory.createCompoundBorder(button.getBorder(), BorderFactory.createEmptyBorder(4,8,4,8)));
+		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent evt) {
+				button.setBackground(hoverColor);
+			}
+			@Override
+			public void mouseExited(MouseEvent evt) {
+				button.setBackground(normalColor);
+			}
+		});
+	}
+
+	public void addAlgorithmChangeListener(ActionListener listener) {
+		algorithmBox.addActionListener(listener);
+	}
 
 	public void setSelectedAlgorithm(String algorithm) {
 		algorithmBox.setSelectedItem(algorithm);
